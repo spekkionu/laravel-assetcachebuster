@@ -2,6 +2,7 @@
     "name": "spekkionu/assetcachebuster",
     "description": "Prefixes asset urls with a unique hash which will allow invalidation of asset files cached by the browser.",
     "keywords": ["assets", "cachebuster", "cache", "cdn", "laravel", "laravel-4"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Jonathan Bernardi",
