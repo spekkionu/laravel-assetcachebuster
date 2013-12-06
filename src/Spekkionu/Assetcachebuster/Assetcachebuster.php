@@ -5,6 +5,13 @@ use InvalidArgumentException;
 class Assetcachebuster {
 
     /**
+     * Flag for if the package is anabled
+     *
+     * @var boolean $enabled
+     */
+    protected $enabled = false;
+
+    /**
      * CDN Url
      *
      * @var string $cdn The url for the cdn
@@ -28,15 +35,32 @@ class Assetcachebuster {
     /**
      * Class constructor
      *
-     * @param string $hash The hash to use to bust the cache
-     * @param string $prefix A prefix containing assets
-     * @param string $cdn The url for the cdn
+     * @param array $options Array of options from the config file
      */
-    public function __construct($hash, $prefix = null, $cdn = null)
+    public function __construct(array $options)
     {
-        $this->setHash($hash);
-        $this->setPrefix($prefix);
-        $this->setCdnUrl($cdn);
+        if (isset($options['enable'])) {
+            $this->setEnabled($options['enable']);
+        }
+        if (isset($options['hash'])) {
+            $this->setHash($options['hash']);
+        }
+        if (isset($options['prefix'])) {
+            $this->setPrefix($options['prefix']);
+        }
+        if (isset($options['cdn'])) {
+            $this->setCdnUrl($options['cdn']);
+        }
+    }
+
+    /**
+     * Enables / Disables the package
+     *
+     * @param boolean $enabled True to enable, false to disable
+     */
+    public function setEnabled($enabled = true)
+    {
+        $this->enabled = (bool) $enabled;
     }
 
     /**
@@ -86,6 +110,11 @@ class Assetcachebuster {
     public function url($path = '')
     {
         $path = trim($path, '/');
-        return $this->cdn . $this->prefix . $this->hash . $path;
+        if ($this->enabled) {
+            return $this->cdn . $this->prefix . $this->hash . $path;
+        } else {
+            return $this->cdn . $path;
+        }
+
     }
 }

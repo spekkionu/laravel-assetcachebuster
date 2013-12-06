@@ -76,11 +76,13 @@ php artisan config:publish spekkionu/assetcachebuster
 This will create a config file at app/config/packages/spekkionu/assetcachebuster/config.php
 Use this file to configure the package.
 
+Set the `enabled` flag in the config to `true` in order for asset urls to be prefixed.
+
 Usage
 =====
 
-For any asset urls you want to be able to cache you must use the Asset::url($url) facade rather than directly outputting the url.
-For example if you wanted to link to a stylesheet located at /css/stylesheet.css you would add the following to your view
+For any asset urls you want to be able to cache you must use the `Asset::url($url)` facade rather than directly outputting the url.
+For example if you wanted to link to a stylesheet located at `/css/stylesheet.css` you would add the following to your view
 ```html
 <link rel="stylesheet" href="<?php echo Asset::url('/css/stylesheet.css');?>">
 ```
@@ -113,14 +115,31 @@ Now any asset url will begin with the cdn url.
 
 This will only work with a CDN that supports origin pull as it does not push any asset files to the cdn.
 
-Using without a CDN
-===================
+Turning off for development environments
+========================================
 
-To use without a CDN just leave the cdn key blank in the config.
+You may not need asset files to be prefixed on your development environment if you are not setting far future
+expires headers for asset files.
 
-However in order to actually receive a benefit from the package asset files should be set with far future expires headers.
+To override a setting for a specific environment create a folder matching the name of that environment in the `app/config/packages/spekkionu/assetcachebuster`
+directory mathcing the name of the environment `local`, `development`, or whatever you have named the environment.
+
+Copy the package config file into this folder and change any settings you want to override for that envionment.
+
+When using multiple environments make sure to specify the environment when running the cache invalidation
+artisan command. `php artisan config:publish assetcachebuster:generate --env=environment-name`
+
+I recommend only including settings you wish to override in config files for environments other than production.
+This will help avoid confusion if a setting is changed.
+
+Setting Far Furture Expires Headers
+===================================
+
+In order to actually receive a benefit from the package asset files should be set with far future expires headers.
 
 To do this add the following to your apache .htaccess file.
+
+You might need to configure your cdn to set these headers if you are using one.
 
 
 ```ApacheConf

@@ -4,6 +4,25 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | Asset Cache Enabled
+    |--------------------------------------------------------------------------
+    |
+    | If this is set to true the asset urls will be prefixed with a hash to allow
+    | for cache invalidation.
+    |
+    | Setting this to false will not prefix urls with the hash effectively disabling
+    | the package.  This can be helpful to not use the hash prefix for development
+    | environments.
+    |
+    | Asset urls will still be prefixed with the cdn url.  This setting has no effect
+    | on that.
+    |
+    */
+
+    'enable' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Asset Cache Prefix Hash
     |--------------------------------------------------------------------------
     |
