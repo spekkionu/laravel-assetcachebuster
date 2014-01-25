@@ -16,7 +16,7 @@ Add `spekkionu\assetcachebuster` as a requirement to composer.json:
 ```javascript
 {
     "require": {
-        "spekkionu\assetcachebuster": "dev-master"
+        "spekkionu/assetcachebuster": "dev-master"
     }
 }
 ```
