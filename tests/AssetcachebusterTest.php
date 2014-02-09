@@ -3,6 +3,8 @@
 use Spekkionu\Assetcachebuster\Assetcachebuster;
 use PHPUnit_Framework_TestCase;
 
+require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/Assetcachebuster.php');
+
 class AssetcachebusterTest extends PHPUnit_Framework_TestCase
 {
 

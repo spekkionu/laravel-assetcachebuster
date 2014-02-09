@@ -132,7 +132,7 @@ artisan command. `php artisan config:publish assetcachebuster:generate --env=env
 I recommend only including settings you wish to override in config files for environments other than production.
 This will help avoid confusion if a setting is changed.
 
-Setting Far Furture Expires Headers
+Setting Far Future Expires Headers
 ===================================
 
 In order to actually receive a benefit from the package asset files should be set with far future expires headers.
