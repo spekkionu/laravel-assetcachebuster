@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/spekkionu/laravel-assetcachebuster.png?branch=master)](https://travis-ci.org/spekkionu/laravel-assetcachebuster)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/spekkionu/laravel-assetcachebuster/badges/quality-score.png?s=3f8e68ec5a903cbe6934fe6acfc40c0a751ec3f6)](https://scrutinizer-ci.com/g/spekkionu/laravel-assetcachebuster/)
+[![Code Coverage](https://scrutinizer-ci.com/g/spekkionu/laravel-assetcachebuster/badges/coverage.png?s=6466dda4d16f042564234456347581aca7cae9dc)](https://scrutinizer-ci.com/g/spekkionu/laravel-assetcachebuster/)
+
 Asset Cache Buster
 ==================
 
