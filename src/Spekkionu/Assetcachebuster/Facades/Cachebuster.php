@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Facade;
 
-class Cachebuster extends Facade {
-    protected static function getFacadeAccessor() { return 'assetcachebuster'; }
+class Cachebuster extends Facade
+{
+    protected static function getFacadeAccessor()
+    {
+        return 'assetcachebuster';
+    }
 }

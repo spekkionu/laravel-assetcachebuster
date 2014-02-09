@@ -2,7 +2,8 @@
 
 use InvalidArgumentException;
 
-class Assetcachebuster {
+class Assetcachebuster
+{
 
     /**
      * Flag for if the package is anabled

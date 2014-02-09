@@ -74,7 +74,8 @@ class GenerateCommand extends Command
     {
         $env = $this->option('env') ? $this->option('env').'/' : '';
         try {
-            $contents = $this->files->get($path = $this->laravel['path']."/config/packages/spekkionu/assetcachebuster/{$env}config.php");
+            $path = $this->laravel['path']."/config/packages/spekkionu/assetcachebuster/{$env}config.php";
+            $contents = $this->files->get($path);
             return array($path, $contents);
         } catch (FileNotFoundException $e) {
             $this->error("Assetcachebuster config file not found.");
@@ -97,11 +98,16 @@ class GenerateCommand extends Command
     protected function replaceHash($hash, $content)
     {
         $current = $this->laravel['config']['assetcachebuster::hash'];
-        $content = preg_replace("/([\'\"]hash[\'\"].+?[\'\"])(".preg_quote($current, '/').")([\'\"].*)/", "'hash' => '" . $hash . "',", $content, 1, $count);
+        $content = preg_replace(
+            "/([\'\"]hash[\'\"].+?[\'\"])(".preg_quote($current, '/').")([\'\"].*)/",
+            "'hash' => '" . $hash . "',",
+            $content,
+            1,
+            $count
+        );
         if ($count != 1) {
             throw new \Exception("Could not find current hash key in config file.");
         }
         return $content;
     }
-
 }
