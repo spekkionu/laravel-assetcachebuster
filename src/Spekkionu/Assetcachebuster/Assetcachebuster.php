@@ -118,4 +118,14 @@ class Assetcachebuster
         }
 
     }
+
+    /**
+     * Generate a random key for the application.
+     *
+     * @return string
+     */
+    public static function generateHash()
+    {
+        return \md5(\time());
+    }
 }

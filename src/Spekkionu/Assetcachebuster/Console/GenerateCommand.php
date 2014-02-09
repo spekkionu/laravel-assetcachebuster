@@ -4,6 +4,7 @@
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Filesystem\FileNotFoundException;
+use Spekkionu\Assetcachebuster\Assetcachebuster as CacheBuster;
 
 /**
  * Generates a new asset cache hash
@@ -92,7 +93,7 @@ class GenerateCommand extends Command
      */
     protected function generateHash()
     {
-        return md5(time());
+        return CacheBuster::generateHash();
     }
 
     protected function replaceHash($hash, $content)
