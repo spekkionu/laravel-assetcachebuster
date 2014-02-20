@@ -30,10 +30,10 @@ class AssetcachebusterServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['assetcachebuster'] = $this->app->share(function ($app) {
-            $options['enable'] = $this->app['config']->get('assetcachebuster::enable');
-            $options['hash'] = $this->app['config']->get('assetcachebuster::hash');
-            $options['cdn'] = $this->app['config']->get('assetcachebuster::cdn');
-            $options['prefix'] = $this->app['config']->get('assetcachebuster::prefix');
+            $options['enable'] = $app['config']->get('assetcachebuster::enable');
+            $options['hash'] = $app['config']->get('assetcachebuster::hash');
+            $options['cdn'] = $app['config']->get('assetcachebuster::cdn');
+            $options['prefix'] = $app['config']->get('assetcachebuster::prefix');
             return new Assetcachebuster($options);
         });
 
