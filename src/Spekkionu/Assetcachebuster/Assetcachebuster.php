@@ -17,7 +17,7 @@ class Assetcachebuster
      *
      * @var string $cdn The url for the cdn
      */
-    protected $cdn = null;
+    protected $cdn = '/';
 
     /**
      * Asset cache busting hash
