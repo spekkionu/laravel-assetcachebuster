@@ -102,7 +102,7 @@ Invalidating the Cache
 To generate a new hash to invalidate caches and force browsers to download new versions of asset files run the following artisan command.
 
 ```
-php artisan config:publish assetcachebuster:generate
+php artisan assetcachebuster:generate
 ```
 
 This will generate a new hash and update the config file.
