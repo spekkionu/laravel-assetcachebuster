@@ -131,7 +131,7 @@ directory mathcing the name of the environment `local`, `development`, or whatev
 Copy the package config file into this folder and change any settings you want to override for that envionment.
 
 When using multiple environments make sure to specify the environment when running the cache invalidation
-artisan command. `php artisan config:publish assetcachebuster:generate --env=environment-name`
+artisan command. `php artisan assetcachebuster:generate --env=environment-name`
 
 I recommend only including settings you wish to override in config files for environments other than production.
 This will help avoid confusion if a setting is changed.
