@@ -75,9 +75,9 @@ For Nginx, add the following to your virtual host file
 # | Filename-based cache busting                                               |
 # ------------------------------------------------------------------------------
 # Rewrite assets/hash/file.js to assets/file.js
-    location ~* "^\/[a-f0-9]{32}(\/*\.*(.*))$" {
-        try_files $uri $1;
-    }
+location ~* "^\/[a-f0-9]{32}(\/*\.*(.*))$" {
+    try_files $uri $1;
+}
 ```
 
 Configuration
