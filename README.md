@@ -68,6 +68,18 @@ Add the following to your .htaccess file **before** the Laravel rewrite rule:
 </IfModule>
 ```
 
+For Nginx, add the following to your virtual host file
+
+```Nginx
+# ------------------------------------------------------------------------------
+# | Filename-based cache busting                                               |
+# ------------------------------------------------------------------------------
+# Rewrite assets/hash/file.js to assets/file.js
+location ~* "^\/[a-f0-9]{32}(\/*\.*(.*))$" {
+    try_files $uri $1;
+}
+```
+
 Configuration
 =============
 
