@@ -235,3 +235,17 @@ FileETag None
 
 </IfModule>
 ```
+For Nginx, add the following to your virtual host file
+
+```Nginx
+# ------------------------------------------------------------------------------
+# | Expires headers (for better cache control)                                 |
+# ------------------------------------------------------------------------------
+
+# Sets the expires header to 1 year in the furture for javascript, css, and images.
+
+location ~* .(js|css|png|jpg|jpeg|gif|ico)$ {
+    expires 1y;
+    log_not_found off;
+}
+```
