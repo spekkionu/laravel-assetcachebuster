@@ -19,7 +19,10 @@ class AssetcachebusterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('spekkionu/assetcachebuster');
+        $this->publishes([
+            dirname(dirname(__DIR__)) . '/config/assetcachebuster.php' => config_path('assetcachebuster.php'),
+        ]);
+
     }
 
     /**
@@ -29,11 +32,16 @@ class AssetcachebusterServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
+        $this->mergeConfigFrom(
+            dirname(dirname(__DIR__)) . '/config/assetcachebuster.php', 'assetcachebuster'
+        );
+
         $this->app['assetcachebuster'] = $this->app->share(function ($app) {
-            $options['enable'] = $app['config']->get('assetcachebuster::enable');
-            $options['hash'] = $app['config']->get('assetcachebuster::hash');
-            $options['cdn'] = $app['config']->get('assetcachebuster::cdn');
-            $options['prefix'] = $app['config']->get('assetcachebuster::prefix');
+            $options['enable'] = $app['config']->get('assetcachebuster.enable');
+            $options['hash'] = $app['config']->get('assetcachebuster.hash');
+            $options['cdn'] = $app['config']->get('assetcachebuster.cdn');
+            $options['prefix'] = $app['config']->get('assetcachebuster.prefix');
             return new Assetcachebuster($options);
         });
 

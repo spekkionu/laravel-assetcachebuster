@@ -15,12 +15,15 @@ It works with any static files like stylesheets, javascript files, and images.
 Installation
 ============
 
+The 2.x branch is only compatible with Laravel 5.x. 
+If you need Laravel 4.x compatibility use the 1.x branch.
+
 Add `spekkionu\assetcachebuster` as a requirement to composer.json:
 
 ```javascript
 {
     "require": {
-        "spekkionu/assetcachebuster": "dev-master"
+        "spekkionu/assetcachebuster": "2.*"
     }
 }
 ```
@@ -86,10 +89,10 @@ Configuration
 In order to generate new hashes to invalidate the cache you must publish the package configuration by running the following artisan command.
 
 ```
-php artisan config:publish spekkionu/assetcachebuster
+php artisan vendor:publish --provider=Spekkionu\Assetcachebuster\AssetcachebusterServiceProvider
 ```
 
-This will create a config file at app/config/packages/spekkionu/assetcachebuster/config.php
+This will create a config file at `config/assetcachebuster.php`
 Use this file to configure the package.
 
 Set the `enabled` flag in the config to `true` in order for asset urls to be prefixed.
@@ -105,7 +108,7 @@ For example if you wanted to link to a stylesheet located at `/css/stylesheet.cs
 
 If you are using a blade template the following will work instead.
 ```html
-<link rel="stylesheet" href="{{{ Asset::url('/css/stylesheet.css') }}}">
+<link rel="stylesheet" href="{{ Asset::url('/css/stylesheet.css') }}">
 ```
 
 Invalidating the Cache
@@ -130,23 +133,6 @@ To use with a CDN such as [Cloudfront](http://aws.amazon.com/cloudfront/) set th
 Now any asset url will begin with the cdn url.
 
 This will only work with a CDN that supports origin pull as it does not push any asset files to the cdn.
-
-Turning off for development environments
-========================================
-
-You may not need asset files to be prefixed on your development environment if you are not setting far future
-expires headers for asset files.
-
-To override a setting for a specific environment create a folder matching the name of that environment in the `app/config/packages/spekkionu/assetcachebuster`
-directory mathcing the name of the environment `local`, `development`, or whatever you have named the environment.
-
-Copy the package config file into this folder and change any settings you want to override for that envionment.
-
-When using multiple environments make sure to specify the environment when running the cache invalidation
-artisan command. `php artisan assetcachebuster:generate --env=environment-name`
-
-I recommend only including settings you wish to override in config files for environments other than production.
-This will help avoid confusion if a setting is changed.
 
 Setting Far Future Expires Headers
 ===================================

@@ -60,7 +60,7 @@ class GenerateCommand extends Command
 
         $this->files->put($path, $contents);
 
-        $this->laravel['config']['assetcachebuster::hash'] = $hash;
+        $this->laravel['config']['assetcachebuster.hash'] = $hash;
 
         $msg = "New hash {$hash} generated.";
         $this->info($msg);
@@ -73,9 +73,8 @@ class GenerateCommand extends Command
      */
     protected function getConfigFile()
     {
-        $env = $this->option('env') ? $this->option('env').'/' : '';
         try {
-            $path = $this->laravel['path']."/config/packages/spekkionu/assetcachebuster/{$env}config.php";
+            $path = base_path()."/config/assetcachebuster.php";
             $contents = $this->files->get($path);
             return array($path, $contents);
         } catch (FileNotFoundException $e) {
@@ -98,7 +97,7 @@ class GenerateCommand extends Command
 
     protected function replaceHash($hash, $content)
     {
-        $current = $this->laravel['config']['assetcachebuster::hash'];
+        $current = $this->laravel['config']['assetcachebuster.hash'];
         $content = preg_replace(
             "/([\'\"]hash[\'\"].+?[\'\"])(".preg_quote($current, '/').")([\'\"].*)/",
             "'hash' => '" . $hash . "',",
