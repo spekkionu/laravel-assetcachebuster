@@ -76,7 +76,7 @@ class Assetcachebuster
         }
         $hash = trim($hash, '/');
 
-        $this->hash = $hash;
+        $this->hash = ($hash) ? trim($hash, '/') . '/' : '';
     }
 
     /**
@@ -112,7 +112,7 @@ class Assetcachebuster
     {
         $path = trim($path, '/');
         if ($this->enabled) {
-            return $this->cdn . $this->prefix . $path . '?' . $this->hash ;
+            return $this->cdn . $this->prefix . $this->hash . $path;
         } else {
             return $this->cdn . $path;
         }
