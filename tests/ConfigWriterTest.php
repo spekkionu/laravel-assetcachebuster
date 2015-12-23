@@ -4,8 +4,8 @@ namespace Spekkionu\Assetcachebuster\Tests;
 use Spekkionu\Assetcachebuster\Writer\ConfigWriter;
 use PHPUnit_Framework_TestCase;
 
-require_once(dirname(__DIR__) . '/src/Spekkionu\Assetcachebuster\Writer\WriterInterface.php');
-require_once(dirname(__DIR__) . '/src/Spekkionu\Assetcachebuster\Writer\ConfigWriter.php');
+require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/Writer/WriterInterface.php');
+require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/Writer/ConfigWriter.php');
 
 class ConfigWriterTest extends PHPUnit_Framework_TestCase
 {
