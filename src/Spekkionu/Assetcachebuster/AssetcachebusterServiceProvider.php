@@ -3,6 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer;
 use Spekkionu\Assetcachebuster\Writer\ConfigWriter;
+use Illuminate\Contracts\Foundation\Application;
 
 class AssetcachebusterServiceProvider extends ServiceProvider
 {
@@ -38,7 +39,7 @@ class AssetcachebusterServiceProvider extends ServiceProvider
             dirname(dirname(__DIR__)) . '/config/assetcachebuster.php', 'assetcachebuster'
         );
 
-        $this->app['assetcachebuster'] = $this->app->share(function ($app) {
+        $this->app['assetcachebuster'] = $this->app->share(function (Application $app) {
             $options['enable'] = $app['config']->get('assetcachebuster.enable');
             $options['hash'] = $app['config']->get('assetcachebuster.hash');
             $options['cdn'] = $app['config']->get('assetcachebuster.cdn');
@@ -46,13 +47,13 @@ class AssetcachebusterServiceProvider extends ServiceProvider
             return new Assetcachebuster($options);
         });
 
-        $this->app->bind('Spekkionu\Assetcachebuster\Writer\ConfigWriter', function($app){
+        $this->app->bind('Spekkionu\Assetcachebuster\Writer\ConfigWriter', function(Application $app){
             return new ConfigWriter($app->make('Illuminate\Filesystem\Filesystem'), $app->make('path.config'));
         });
 
         $this->app->bind('Spekkionu\Assetcachebuster\Writer\WriterInterface', 'Spekkionu\Assetcachebuster\Writer\ConfigWriter');
 
-        $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer', function($app){
+        $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer', function(Application $app){
             return new ConfigHashReplacer($app->make('assetcachebuster'), $app->make('Spekkionu\Assetcachebuster\Writer\WriterInterface'));
         });
 
@@ -60,7 +61,7 @@ class AssetcachebusterServiceProvider extends ServiceProvider
 
         // Register artisan command
         $this->app['command.assetcachebuster.generate'] = $this->app->share(
-            function ($app) {
+            function (Application $app) {
                 return new Console\GenerateCommand($app->make('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface'), $app->make('Illuminate\Contracts\Config\Repository'));
             }
         );
