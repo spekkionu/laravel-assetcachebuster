@@ -76,8 +76,17 @@ class Assetcachebuster
         }
         $hash = trim($hash, '/');
 
-        $this->hash = ($hash) ? trim($hash, '/') . '/' : '';
+        $this->hash = $hash;
     }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
 
     /**
      * Sets the asset prefix path
@@ -112,7 +121,8 @@ class Assetcachebuster
     {
         $path = trim($path, '/');
         if ($this->enabled) {
-            return $this->cdn . $this->prefix . $this->hash . $path;
+            $hash = ($this->hash) ? trim($this->hash, '/') . '/' : '';
+            return $this->cdn . $this->prefix . $hash . $path;
         } else {
             return $this->cdn . $path;
         }
@@ -124,7 +134,7 @@ class Assetcachebuster
      *
      * @return string
      */
-    public static function generateHash()
+    public function generateHash()
     {
         return \md5(\time());
     }

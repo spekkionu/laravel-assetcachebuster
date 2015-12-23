@@ -1,6 +1,8 @@
 <?php namespace Spekkionu\Assetcachebuster;
 
 use Illuminate\Support\ServiceProvider;
+use Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer;
+use Spekkionu\Assetcachebuster\Writer\ConfigWriter;
 
 class AssetcachebusterServiceProvider extends ServiceProvider
 {
@@ -22,7 +24,6 @@ class AssetcachebusterServiceProvider extends ServiceProvider
         $this->publishes([
             dirname(dirname(__DIR__)) . '/config/assetcachebuster.php' => config_path('assetcachebuster.php'),
         ]);
-
     }
 
     /**
@@ -45,10 +46,22 @@ class AssetcachebusterServiceProvider extends ServiceProvider
             return new Assetcachebuster($options);
         });
 
+        $this->app->bind('Spekkionu\Assetcachebuster\Writer\ConfigWriter', function($app){
+            return new ConfigWriter($app->make('Illuminate\Filesystem\Filesystem'), $app->make('path.config'));
+        });
+
+        $this->app->bind('Spekkionu\Assetcachebuster\Writer\WriterInterface', 'Spekkionu\Assetcachebuster\Writer\ConfigWriter');
+
+        $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer', function($app){
+            return new ConfigHashReplacer($app->make('assetcachebuster'), $app->make('Spekkionu\Assetcachebuster\Writer\WriterInterface'));
+        });
+
+        $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface', 'Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer');
+
         // Register artisan command
         $this->app['command.assetcachebuster.generate'] = $this->app->share(
             function ($app) {
-                return new Console\GenerateCommand($app['files']);
+                return new Console\GenerateCommand($app->make('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface'), $app->make('Illuminate\Contracts\Config\Repository'));
             }
         );
         $this->commands(
@@ -63,6 +76,13 @@ class AssetcachebusterServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('assetcachebuster', 'command.assetcachebuster.generate');
+        return array(
+            'assetcachebuster',
+            'command.assetcachebuster.generate',
+            'Spekkionu\Assetcachebuster\Writer\ConfigWriter',
+            'Spekkionu\Assetcachebuster\Writer\WriterInterface',
+            'Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer',
+            'Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface',
+        );
     }
 }

@@ -1,4 +1,5 @@
-<?php namespace Spekkionu\Assetcachebuster\Tests;
+<?php
+namespace Spekkionu\Assetcachebuster\Tests;
 
 use Spekkionu\Assetcachebuster\Assetcachebuster;
 use PHPUnit_Framework_TestCase;
@@ -83,7 +84,8 @@ class AssetcachebusterTest extends PHPUnit_Framework_TestCase
 
     public function getGenerateHash()
     {
-        $hash = Assetcachebuster::generateHash();
+        $cachebuster = new Assetcachebuster([]);
+        $hash = $cachebuster->generateHash();
         $this->assertEquals(32, strlen($hash));
     }
 }

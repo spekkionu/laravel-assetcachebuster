@@ -2,9 +2,8 @@
 
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Filesystem\FileNotFoundException;
-use Spekkionu\Assetcachebuster\Assetcachebuster as CacheBuster;
+use Illuminate\Contracts\Config\Repository as Config;
+use Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface;
 
 /**
  * Generates a new asset cache hash
@@ -24,19 +23,28 @@ class GenerateCommand extends Command
      * @var string
      */
     protected $description = 'Generates a new asset hash';
+    /**
+     * @var HashReplacerInterface
+     */
+    private $hashReplacer;
+    /**
+     * @var Config
+     */
+    private $config;
 
 
     /**
      * Create a new key generator command.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
+     * @param HashReplacerInterface $hashReplacer
+     * @param Config $config
      */
-    public function __construct(Filesystem $files)
+    public function __construct(HashReplacerInterface $hashReplacer, Config $config)
     {
         parent::__construct();
 
-        $this->files = $files;
+        $this->hashReplacer = $hashReplacer;
+        $this->config = $config;
     }
 
     /**
@@ -48,66 +56,11 @@ class GenerateCommand extends Command
     {
         $this->line('Generating new asset hash. Environment: <comment>'.$this->laravel->make('env').'</comment>');
 
-        list($path, $contents) = $this->getConfigFile();
+        $hash = $this->hashReplacer->replaceHash();
 
-        if (!$path) {
-            return;
-        }
-
-        $hash = $this->generateHash();
-
-        $contents = $this->replaceHash($hash, $contents);
-
-        $this->files->put($path, $contents);
-
-        $this->laravel['config']['assetcachebuster.hash'] = $hash;
+        $this->config->set('assetcachebuster.hash', $hash);
 
         $msg = "New hash {$hash} generated.";
         $this->info($msg);
-    }
-
-    /**
-     * Get the key file and contents.
-     *
-     * @return array
-     */
-    protected function getConfigFile()
-    {
-        try {
-            $path = base_path()."/config/assetcachebuster.php";
-            $contents = $this->files->get($path);
-            return array($path, $contents);
-        } catch (FileNotFoundException $e) {
-            $this->error("Assetcachebuster config file not found.");
-            $this->info("Did you publish the cache config?");
-            $this->info("Try running php artisan config:publish spekkionu/assetcachebuster ");
-            throw new \Exception("Assetcachebuster config file not found.");
-        }
-    }
-
-    /**
-     * Generate a random key for the application.
-     *
-     * @return string
-     */
-    protected function generateHash()
-    {
-        return CacheBuster::generateHash();
-    }
-
-    protected function replaceHash($hash, $content)
-    {
-        $current = $this->laravel['config']['assetcachebuster.hash'];
-        $content = preg_replace(
-            "/([\'\"]hash[\'\"].+?[\'\"])(".preg_quote($current, '/').")([\'\"].*)/",
-            "'hash' => '" . $hash . "',",
-            $content,
-            1,
-            $count
-        );
-        if ($count != 1) {
-            throw new \Exception("Could not find current hash key in config file.");
-        }
-        return $content;
     }
 }
