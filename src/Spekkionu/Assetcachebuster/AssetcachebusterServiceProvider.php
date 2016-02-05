@@ -24,7 +24,7 @@ class AssetcachebusterServiceProvider extends ServiceProvider
     {
         $this->publishes([
             dirname(dirname(__DIR__)) . '/config/assetcachebuster.php' => config_path('assetcachebuster.php'),
-        ]);
+        ], 'config');
     }
 
     /**

@@ -31,20 +31,20 @@ Add `spekkionu\assetcachebuster` as a requirement to composer.json:
 Update your packages with `composer update` or install with `composer install`.
 
 Once Composer has installed or updated your packages you need to register the service provider with the application.
-Open up `app/config/app.php` and find the `providers` key.
+Open up `config/app.php` and find the `providers` key.
 
 ```php
 'providers' => array(
-    'Spekkionu\Assetcachebuster\AssetcachebusterServiceProvider',
+    Spekkionu\Assetcachebuster\AssetcachebusterServiceProvider::class,
 )
 ```
 
 In order to generate an asset url the asset url generation facade must be registered.
-You can register the facade via the `aliases` key of your `app/config/app.php` file.
+You can register the facade via the `aliases` key of your `config/app.php` file.
 
 ```php
 'aliases' => array(
-    'Asset' => 'Spekkionu\Assetcachebuster\Facades\Cachebuster'
+    'Asset' => Spekkionu\Assetcachebuster\Facades\Cachebuster::class
 )
 ```
 
@@ -89,7 +89,7 @@ Configuration
 In order to generate new hashes to invalidate the cache you must publish the package configuration by running the following artisan command.
 
 ```
-php artisan vendor:publish --provider=Spekkionu\Assetcachebuster\AssetcachebusterServiceProvider
+php artisan vendor:publish --provider=Spekkionu\Assetcachebuster\AssetcachebusterServiceProvider --tag=config
 ```
 
 This will create a config file at `config/assetcachebuster.php`
