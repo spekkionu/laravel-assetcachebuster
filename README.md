@@ -89,7 +89,7 @@ Configuration
 In order to generate new hashes to invalidate the cache you must publish the package configuration by running the following artisan command.
 
 ```
-php artisan vendor:publish --provider=Spekkionu\Assetcachebuster\AssetcachebusterServiceProvider --tag=config
+php artisan vendor:publish --provider="Spekkionu\Assetcachebuster\AssetcachebusterServiceProvider" --tag=config
 ```
 
 This will create a config file at `config/assetcachebuster.php`
