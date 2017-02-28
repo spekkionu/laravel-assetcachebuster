@@ -39,30 +39,31 @@ class AssetcachebusterServiceProvider extends ServiceProvider
             dirname(dirname(__DIR__)) . '/config/assetcachebuster.php', 'assetcachebuster'
         );
 
-        $this->app['assetcachebuster'] = $this->app->singleton(function (Application $app) {
-            $options['enable'] = $app['config']->get('assetcachebuster.enable');
-            $options['hash'] = $app['config']->get('assetcachebuster.hash');
-            $options['cdn'] = $app['config']->get('assetcachebuster.cdn');
-            $options['prefix'] = $app['config']->get('assetcachebuster.prefix');
+        $this->app->singleton('assetcachebuster', function () {
+            $options['enable'] = $this->app['config']->get('assetcachebuster.enable');
+            $options['hash'] = $this->app['config']->get('assetcachebuster.hash');
+            $options['cdn'] = $this->app['config']->get('assetcachebuster.cdn');
+            $options['prefix'] = $this->app['config']->get('assetcachebuster.prefix');
             return new Assetcachebuster($options);
         });
 
-        $this->app->bind('Spekkionu\Assetcachebuster\Writer\ConfigWriter', function(Application $app){
-            return new ConfigWriter($app->make('Illuminate\Filesystem\Filesystem'), $app->make('path.config'));
+        $this->app->bind('Spekkionu\Assetcachebuster\Writer\ConfigWriter', function(){
+            return new ConfigWriter($this->app->make('Illuminate\Filesystem\Filesystem'), $this->app->make('path.config'));
         });
 
         $this->app->bind('Spekkionu\Assetcachebuster\Writer\WriterInterface', 'Spekkionu\Assetcachebuster\Writer\ConfigWriter');
 
-        $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer', function(Application $app){
-            return new ConfigHashReplacer($app->make('assetcachebuster'), $app->make('Spekkionu\Assetcachebuster\Writer\WriterInterface'));
+        $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer', function(){
+            return new ConfigHashReplacer($this->app->make('assetcachebuster'), $this->app->make('Spekkionu\Assetcachebuster\Writer\WriterInterface'));
         });
 
         $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface', 'Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer');
 
         // Register artisan command
-        $this->app['command.assetcachebuster.generate'] = $this->app->singleton(
-            function (Application $app) {
-                return new Console\GenerateCommand($app->make('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface'), $app->make('Illuminate\Contracts\Config\Repository'));
+        $this->app->singleton(
+            'command.assetcachebuster.generate',
+            function () {
+                return new Console\GenerateCommand($this->app->make('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface'), $this->app->make('Illuminate\Contracts\Config\Repository'));
             }
         );
         $this->commands(
