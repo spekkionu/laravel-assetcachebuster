@@ -39,7 +39,7 @@ class AssetcachebusterServiceProvider extends ServiceProvider
             dirname(dirname(__DIR__)) . '/config/assetcachebuster.php', 'assetcachebuster'
         );
 
-        $this->app['assetcachebuster'] = $this->app->share(function (Application $app) {
+        $this->app['assetcachebuster'] = $this->app->singleton(function (Application $app) {
             $options['enable'] = $app['config']->get('assetcachebuster.enable');
             $options['hash'] = $app['config']->get('assetcachebuster.hash');
             $options['cdn'] = $app['config']->get('assetcachebuster.cdn');
@@ -60,7 +60,7 @@ class AssetcachebusterServiceProvider extends ServiceProvider
         $this->app->bind('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface', 'Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer');
 
         // Register artisan command
-        $this->app['command.assetcachebuster.generate'] = $this->app->share(
+        $this->app['command.assetcachebuster.generate'] = $this->app->singleton(
             function (Application $app) {
                 return new Console\GenerateCommand($app->make('Spekkionu\Assetcachebuster\HashReplacer\HashReplacerInterface'), $app->make('Illuminate\Contracts\Config\Repository'));
             }
