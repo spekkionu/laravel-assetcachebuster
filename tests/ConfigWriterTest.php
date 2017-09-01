@@ -1,13 +1,13 @@
 <?php
 namespace Spekkionu\Assetcachebuster\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Spekkionu\Assetcachebuster\Writer\ConfigWriter;
-use PHPUnit_Framework_TestCase;
 
 require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/Writer/WriterInterface.php');
 require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/Writer/ConfigWriter.php');
 
-class ConfigWriterTest extends PHPUnit_Framework_TestCase
+class ConfigWriterTest extends TestCase
 {
     public function testGetCurrentConfig()
     {

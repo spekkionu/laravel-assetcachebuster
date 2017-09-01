@@ -1,12 +1,12 @@
 <?php
 namespace Spekkionu\Assetcachebuster\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Spekkionu\Assetcachebuster\Assetcachebuster;
-use PHPUnit_Framework_TestCase;
 
 require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/Assetcachebuster.php');
 
-class AssetcachebusterTest extends PHPUnit_Framework_TestCase
+class AssetcachebusterTest extends TestCase
 {
 
     public function testSimpleGeneration()

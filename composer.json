@@ -6,17 +6,30 @@
     "authors": [
         {
             "name": "Jonathan Bernardi",
-            "email": "spekkionu@spekkionu.com"
+            "email": "jon@jonbernardi.com"
         }
     ],
     "require": {
-        "php": ">=5.3.0",
-        "illuminate/support": "5.*"
+        "php": ">=7.0",
+        "illuminate/support": "5.5.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
     },
     "autoload": {
         "psr-0": {
             "Spekkionu\\Assetcachebuster\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Spekkionu\\Assetcachebuster\\AssetcachebusterServiceProvider"
+            ],
+            "aliases": {
+                "Asset": "Spekkionu\\Assetcachebuster\\Facades\\Cachebuster"
+            }
+        }
+    }
 }

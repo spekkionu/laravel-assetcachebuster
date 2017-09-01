@@ -1,13 +1,13 @@
 <?php
 namespace Spekkionu\Assetcachebuster\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer;
-use PHPUnit_Framework_TestCase;
 
 require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/HashReplacer/HashReplacerInterface.php');
 require_once(dirname(__DIR__) . '/src/Spekkionu/Assetcachebuster/HashReplacer/ConfigHashReplacer.php');
 
-class HashReplacerTest extends PHPUnit_Framework_TestCase
+class HashReplacerTest extends TestCase
 {
     public function testReplaceHash()
     {
