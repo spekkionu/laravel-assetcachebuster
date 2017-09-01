@@ -3,7 +3,6 @@
 use Illuminate\Support\ServiceProvider;
 use Spekkionu\Assetcachebuster\HashReplacer\ConfigHashReplacer;
 use Spekkionu\Assetcachebuster\Writer\ConfigWriter;
-use Illuminate\Contracts\Foundation\Application;
 
 class AssetcachebusterServiceProvider extends ServiceProvider
 {
@@ -40,10 +39,13 @@ class AssetcachebusterServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton('assetcachebuster', function () {
-            $options['enable'] = $this->app['config']->get('assetcachebuster.enable');
-            $options['hash'] = $this->app['config']->get('assetcachebuster.hash');
-            $options['cdn'] = $this->app['config']->get('assetcachebuster.cdn');
-            $options['prefix'] = $this->app['config']->get('assetcachebuster.prefix');
+        	$options = [
+        		'enable' => $this->app['config']->get('assetcachebuster.enable'),
+        		'hash' => $this->app['config']->get('assetcachebuster.hash'),
+        		'cdn' => $this->app['config']->get('assetcachebuster.cdn'),
+        		'prefix' => $this->app['config']->get('assetcachebuster.prefix'),
+	        ];
+
             return new Assetcachebuster($options);
         });
 
