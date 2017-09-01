@@ -82,10 +82,30 @@ class AssetcachebusterTest extends TestCase
         $this->assertEquals($expected, $cachebuster->url($path));
     }
 
-    public function getGenerateHash()
+    public function testGenerateHash()
     {
         $cachebuster = new Assetcachebuster([]);
         $hash = $cachebuster->generateHash();
         $this->assertEquals(32, strlen($hash));
     }
+
+	public function testInvalidHash()
+	{
+		$this->expectException(\InvalidArgumentException::class);
+		$cachebuster = new Assetcachebuster([]);
+		$cachebuster->setHash('badhash');
+    }
+
+	public function testGetHash()
+	{
+    	$hash = md5('hash');
+		$options = array(
+			'enable' => true,
+			'hash' => $hash,
+			'prefix' => 'assets',
+			'cdn' => 'http://cdn.static.com'
+		);
+		$cachebuster = new Assetcachebuster($options);
+		$this->assertEquals($hash, $cachebuster->getHash());
+	}
 }

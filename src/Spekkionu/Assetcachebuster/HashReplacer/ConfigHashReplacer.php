@@ -56,7 +56,7 @@ class ConfigHashReplacer implements HashReplacerInterface
             $count
         );
         if ($count != 1) {
-            throw new \Exception("Could not find current hash key in config.");
+            throw new \RuntimeException("Could not find current hash key in config.");
         }
 
         $this->writer->setCurrentConfig($content);
