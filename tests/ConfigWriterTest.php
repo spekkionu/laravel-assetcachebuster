@@ -13,7 +13,8 @@ class ConfigWriterTest extends TestCase
     {
         $dir = __DIR__ . DIRECTORY_SEPARATOR . '_data';
         $path = $dir . DIRECTORY_SEPARATOR . "assetcachebuster.php";
-        $filesystem = $this->getMockBuilder('\Illuminate\Filesystem\Filesystem')->setMethods(['get'])->getMock();
+        $filesystem = $this->getMockBuilder('\Illuminate\Filesystem\Filesystem')->setMethods(['get', 'exists'])->getMock();
+        $filesystem->expects($this->once())->method('exists')->will($this->returnValue(true));
         $filesystem->expects($this->once())->method('get')->with($this->equalTo($path));
 
         $writer = new ConfigWriter($filesystem, $dir);
@@ -26,9 +27,38 @@ class ConfigWriterTest extends TestCase
         $content = 'config file test content';
         $dir = __DIR__ . DIRECTORY_SEPARATOR . '_data';
         $path = $dir . DIRECTORY_SEPARATOR . "assetcachebuster.php";
-        $filesystem = $this->getMockBuilder('\Illuminate\Filesystem\Filesystem')->setMethods(['put'])->getMock();
+        $filesystem = $this->getMockBuilder('\Illuminate\Filesystem\Filesystem')->setMethods(['put', 'exists'])->getMock();
+        $filesystem->expects($this->once())->method('exists')->will($this->returnValue(true));
         $filesystem->expects($this->once())->method('put')->with($this->equalTo($path), $this->equalTo($content));
 
+        $writer = new ConfigWriter($filesystem, $dir);
+        $writer->setCurrentConfig($content);
+    }
+
+    public function testGetWithoutConfigFile()
+    {
+        $content = 'config file test content';
+        $dir = __DIR__ . DIRECTORY_SEPARATOR . '_data';
+        $path = $dir . DIRECTORY_SEPARATOR . "assetcachebuster.php";
+        $filesystem = $this->getMockBuilder('\Illuminate\Filesystem\Filesystem')->setMethods(['get', 'exists'])->getMock();
+        $filesystem->expects($this->once())->method('exists')->will($this->returnValue(false));
+        $filesystem->expects($this->never())->method('get');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $writer = new ConfigWriter($filesystem, $dir);
+        $writer->getCurrentConfig($content);
+    }
+
+    public function testSetWithoutConfigFile()
+    {
+        $content = 'config file test content';
+        $dir = __DIR__ . DIRECTORY_SEPARATOR . '_data';
+        $path = $dir . DIRECTORY_SEPARATOR . "assetcachebuster.php";
+        $filesystem = $this->getMockBuilder('\Illuminate\Filesystem\Filesystem')->setMethods(['put', 'exists'])->getMock();
+        $filesystem->expects($this->once())->method('exists')->will($this->returnValue(false));
+        $filesystem->expects($this->never())->method('put');
+
+        $this->expectException(\InvalidArgumentException::class);
         $writer = new ConfigWriter($filesystem, $dir);
         $writer->setCurrentConfig($content);
     }

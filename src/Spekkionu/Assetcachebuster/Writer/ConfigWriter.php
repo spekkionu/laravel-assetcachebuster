@@ -33,7 +33,16 @@ class ConfigWriter implements WriterInterface
     protected function getConfigFile()
     {
         return $this->config_path . DIRECTORY_SEPARATOR . "assetcachebuster.php";
+    }
 
+    /**
+     * Check if the config file exists
+     * 
+     * @return bool
+     */
+    protected function configExists()
+    {
+        return $this->filesystem->exists($this->getConfigFile());
     }
 
     /**
@@ -43,9 +52,10 @@ class ConfigWriter implements WriterInterface
      */
     public function getCurrentConfig()
     {
-        $path = $this->getConfigFile();
-        return $this->filesystem->get($path);
-
+        if (!$this->configExists()) {
+            throw new \InvalidArgumentException('The config file does not exist. Did you run the vendor:publish command?');
+        }
+        return $this->filesystem->get($this->getConfigFile());
     }
 
     /**
@@ -55,9 +65,9 @@ class ConfigWriter implements WriterInterface
      */
     public function setCurrentConfig($content)
     {
-        $path = $this->getConfigFile();
-        $this->filesystem->put($path, $content);
+        if (!$this->configExists()) {
+            throw new \InvalidArgumentException('The config file does not exist. Did you run the vendor:publish command?');
+        }
+        $this->filesystem->put($this->getConfigFile(), $content);
     }
-
-
 }
