@@ -52,9 +52,9 @@ class GenerateCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
-        $this->line('Generating new asset hash. Environment: <comment>'.$this->laravel->make('env').'</comment>');
+        $this->line('Generating new asset hash. Environment: <comment>' . $this->laravel->make('env') . '</comment>');
 
         $hash = $this->hashReplacer->replaceHash();
 
@@ -63,4 +63,5 @@ class GenerateCommand extends Command
         $msg = "New hash {$hash} generated.";
         $this->info($msg);
     }
+
 }
