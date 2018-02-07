@@ -5,8 +5,13 @@ php:
   - 7.1
   - 7.2
 
+matrix:
+  allow_failures:
+    - php: 7.3
+
 before_script:
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
+  - wget https://phar.phpunit.de/phpunit-7.0.0.phar -O phpunit.phar
 
-script: ./vendor/bin/phpunit --configuration phpunit.travis.xml --coverage-text
+script: php phpunit.phar --configuration phpunit.travis.xml --coverage-text
