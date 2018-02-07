@@ -10,9 +10,11 @@ build:
         php:
             version: 7.1
     tests:
+        before:
+            - 'wget https://phar.phpunit.de/phpunit-6.5.6.phar -O phpunit.phar'
         override:
             -
-                command: './vendor/bin/phpunit --configuration phpunit.travis.xml --coverage-text'
+                command: 'php phpunit.phar --configuration phpunit.travis.xml --coverage-text'
                 coverage:
                     file: 'coverage.clover'
                     format: 'php-clover'
