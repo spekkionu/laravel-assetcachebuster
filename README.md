@@ -18,19 +18,13 @@ Installation
 The 2.x branch is only compatible with Laravel 5.x. 
 If you need Laravel 4.x compatibility use the 1.x branch.
 
-Add `spekkionu\assetcachebuster` as a requirement to composer.json:
+Add `spekkionu\assetcachebuster` as a requirement with composer:
 
-```javascript
-{
-    "require": {
-        "spekkionu/assetcachebuster": "2.*"
-    }
-}
+```bash
+composer require spekkionu\assetcachebuster
 ```
 
-Update your packages with `composer update` or install with `composer install`.
-
-Once Composer has installed or updated your packages you need to register the service provider with the application.
+If you have disabled automatic package discovery you will need to register the service provider with the application.
 Open up `config/app.php` and find the `providers` key.
 
 ```php
@@ -39,7 +33,7 @@ Open up `config/app.php` and find the `providers` key.
 )
 ```
 
-In order to generate an asset url the asset url generation facade must be registered.
+If you have disabled automatic package discovery you will need to register the facade in order to generate an asset url.
 You can register the facade via the `aliases` key of your `config/app.php` file.
 
 ```php
